@@ -1,0 +1,23 @@
+{
+  "name": "node_express_api",
+  "version": "1.0.0",
+  "description": "My very first express.js APi project to get familiar with Node.js runtime environment",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CedricTheveneau/node_express_API.git"
+  },
+  "author": "Cedric THEVENEAU",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CedricTheveneau/node_express_API/issues"
+  },
+  "homepage": "https://github.com/CedricTheveneau/node_express_API#readme",
+  "dependencies": {
+    "express": "^4.18.3"
+  }
+}
