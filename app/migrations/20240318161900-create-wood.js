@@ -14,7 +14,7 @@ module.exports = {
       },
       type: {
         type: Sequelize.ENUM,
-        values: ["softwood", "exotic wood", "noble", "hardwood"],
+        values: ["softwood", "exotic wood", "noble and hardwoods"],
       },
       hardness: {
         type: Sequelize.ENUM,

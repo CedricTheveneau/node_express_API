@@ -17,14 +17,18 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          msg: "First name is correct",
+          notNull: {
+            msg: "First name is required",
+          },
         },
       },
       lastName: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          msg: "Last name is correct",
+          notNull: {
+            msg: "Last name is required",
+          },
         },
       },
       email: {
@@ -32,14 +36,20 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         unique: true,
         validate: {
-          isEmail: true,
-          msg: "Email is correct",
+          isEmail: {
+            msg: "Email is invalid",
+          },
+          notNull: {
+            msg: "Email is required",
+          },
         },
         password: {
           type: DataTypes.STRING,
           allowNull: false,
           validate: {
-            msg: "Password is correct",
+            notNull: {
+              msg: "Password is required",
+            },
           },
         },
       },

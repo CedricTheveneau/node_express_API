@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       name: DataTypes.STRING,
       type: {
         type: DataTypes.ENUM,
-        values: ["softwood", "exotic wood", "noble", "hardwood"],
+        values: ["softwood", "exotic wood", "noble and hardwoods"],
       },
       hardness: {
         type: DataTypes.ENUM,
