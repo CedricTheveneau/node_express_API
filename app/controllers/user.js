@@ -7,13 +7,11 @@ exports.signup = async (req, res) => {
     res.status(201).json(user);
   } catch (err) {
     res.status(500).json({
-      msg:
+      message:
         err.message ||
         "Something wrong happened with your request to create a new user.",
     });
   }
-  console.log(req.body);
-  res.send("You are signup");
 };
 
 exports.login = (req, res) => {
