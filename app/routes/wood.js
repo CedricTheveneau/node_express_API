@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express();
 
-router.get("/list", function (req, res) {
+router.get("/", function (req, res) {
   res.send("List of woods");
 });
 
