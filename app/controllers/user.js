@@ -20,20 +20,21 @@ exports.login = async (req, res) => {
   try {
     const user = await User.findOne({ where: { email: req.body.email } });
     if (!user) {
-      return res.status(404).json({ message: "User not found 789" });
+      return res.status(404).json({ message: "User not found" });
     }
     const matchingPassword = await bcrypt.compare(
       req.body.password,
       user.password
     );
     if (!matchingPassword) {
-      return res.status(401).json({ message: "Invalid password 456" });
+      return res.status(401).json({ message: "Invalid password" });
     }
+    console.log(process.env);
     const token = jwt.sign({ id: user.id }, process.env.TOKEN_SECRET, {
-      expiresIn: process.env.TOKEN_EXPIRATION,
+      expiresIn: Number(process.env.TOKEN_EXPIRATION),
     });
     res.status(200).json({ token, user });
-  } catch (error) {
+  } catch (err) {
     res.status(500).json({
       message: err.message || "An error accured during login.",
     });
