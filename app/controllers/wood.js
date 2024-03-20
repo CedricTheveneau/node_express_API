@@ -2,7 +2,7 @@ const { Wood } = require("../models");
 exports.list = async (req, res) => {
   try {
     const woods = await Wood.findAll();
-    res.status(201).json(woods);
+    res.status(200).json(woods);
   } catch (err) {
     res.status(500).json({
       message:
@@ -20,7 +20,7 @@ exports.readByHardness = async (req, res) => {
         hardness: hardness,
       },
     });
-    res.status(201).json(woods);
+    res.status(200).json(woods);
   } catch (err) {
     res.status(500).json({
       message:
