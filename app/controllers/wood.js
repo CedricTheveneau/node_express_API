@@ -99,11 +99,13 @@ exports.delete = async (req, res) => {
         message: err.message || "Didn't find the wood you were looking for.",
       });
     }
-    const oldPath = wood.image.split("uploads")[1];
-    fs.unlink(`uploads/${oldPath}`, (err) => {
-      if (err) throw err;
-      console.log("path/file.txt was deleted");
-    });
+    if (wood.image) {
+      const oldPath = wood.image.split("uploads")[1];
+      fs.unlink(`uploads/${oldPath}`, (err) => {
+        if (err) throw err;
+        console.log("path/file.txt was deleted");
+      });
+    }
     await wood.destroy(wood);
     res.status(204).json({
       message: "Wood successfully deleted.",
