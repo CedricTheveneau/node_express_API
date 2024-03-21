@@ -73,7 +73,6 @@ exports.update = async (req, res) => {
         image: pathname,
       };
       const oldPath = wood.image.split("uploads")[1];
-      console.log(oldPath);
       fs.unlink(`uploads/${oldPath}`, (err) => {
         if (err) throw err;
         console.log("path/file.txt was deleted");
@@ -81,6 +80,32 @@ exports.update = async (req, res) => {
     }
     await wood.update(newWood);
     res.status(200).json(wood);
+  } catch (err) {
+    res.status(500).json({
+      message:
+        err.message ||
+        "Something wrong happened with your request to update a wood.",
+    });
+  }
+};
+
+exports.delete = async (req, res) => {
+  try {
+    const wood = await Wood.findByPk(req.params.id);
+    if (!wood) {
+      res.status(404).json({
+        message: err.message || "Didn't find the wood you were looking for.",
+      });
+    }
+    const oldPath = wood.image.split("uploads")[1];
+    fs.unlink(`uploads/${oldPath}`, (err) => {
+      if (err) throw err;
+      console.log("path/file.txt was deleted");
+    });
+    await wood.destroy(wood);
+    res.status(204).json({
+      message: "Wood successfully deleted.",
+    });
   } catch (err) {
     res.status(500).json({
       message:
