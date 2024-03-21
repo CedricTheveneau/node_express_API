@@ -53,35 +53,33 @@ exports.create = async (req, res) => {
 
 exports.update = async (req, res) => {
   try {
-    const oldWoodDatas = JSON.parse(req.body.datas);
-    // New img
-    // const pathname = `${req.protocol}://${req.get("host")}/uploads/${
-    //   req.file.filename
-    // }`;
-    const woodDatas = {
-      ...JSON.parse(req.body.datas),
-      // image: pathname,
-    };
-    // Update
-    const wood = await Wood.update(
-      { woodDatas },
-      {
-        where: {
-          id: oldWoodDatas.id,
-        },
-      }
-    );
-    // Deletes the old image
-    // if (oldWoodDatas.image) {
-    //   fs.unlink(oldWoodDatas.image, (err) => {
-    //     if (err) {
-    //       console.error(err);
-    //     } else {
-    //       console.log("File is deleted.");
-    //     }
-    //   });
-    // }
+    const wood = await Wood.findByPk(req.params.id);
+    if (!wood) {
+      res.status(404).json({
+        message: err.message || "Didn't find the wood you were looking for.",
+      });
+    }
 
+    let newWood = {
+      ...JSON.parse(req.body.datas),
+    };
+
+    if (req.file) {
+      const pathname = `${req.protocol}://${req.get("host")}/uploads/${
+        req.file.filename
+      }`;
+      newWood = {
+        ...JSON.parse(req.body.datas),
+        image: pathname,
+      };
+      const oldPath = wood.image.split("uploads")[1];
+      console.log(oldPath);
+      fs.unlink(`uploads/${oldPath}`, (err) => {
+        if (err) throw err;
+        console.log("path/file.txt was deleted");
+      });
+    }
+    await wood.update(newWood);
     res.status(200).json(wood);
   } catch (err) {
     res.status(500).json({
