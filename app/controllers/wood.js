@@ -72,11 +72,13 @@ exports.update = async (req, res) => {
         ...JSON.parse(req.body.datas),
         image: pathname,
       };
-      const oldPath = wood.image.split("uploads")[1];
-      fs.unlink(`uploads/${oldPath}`, (err) => {
-        if (err) throw err;
-        console.log("path/file.txt was deleted");
-      });
+      if (wood.image) {
+        const oldPath = wood.image.split("uploads")[1];
+        fs.unlink(`uploads/${oldPath}`, (err) => {
+          if (err) throw err;
+          console.log("path/file.txt was deleted");
+        });
+      }
     }
     await wood.update(newWood);
     res.status(200).json(wood);
