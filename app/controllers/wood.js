@@ -1,4 +1,5 @@
 const { Wood } = require("../models");
+const fs = require("fs");
 exports.list = async (req, res) => {
   try {
     const woods = await Wood.findAll();
@@ -30,7 +31,7 @@ exports.readByHardness = async (req, res) => {
   }
 };
 
-exports.createWood = async (req, res) => {
+exports.create = async (req, res) => {
   try {
     const pathname = `${req.protocol}://${req.get("host")}/uploads/${
       req.file.filename
@@ -46,6 +47,47 @@ exports.createWood = async (req, res) => {
       message:
         err.message ||
         "Something wrong happened with your request to create a new wood.",
+    });
+  }
+};
+
+exports.update = async (req, res) => {
+  try {
+    const oldWoodDatas = JSON.parse(req.body.datas);
+    // New img
+    // const pathname = `${req.protocol}://${req.get("host")}/uploads/${
+    //   req.file.filename
+    // }`;
+    const woodDatas = {
+      ...JSON.parse(req.body.datas),
+      // image: pathname,
+    };
+    // Update
+    const wood = await Wood.update(
+      { woodDatas },
+      {
+        where: {
+          id: oldWoodDatas.id,
+        },
+      }
+    );
+    // Deletes the old image
+    // if (oldWoodDatas.image) {
+    //   fs.unlink(oldWoodDatas.image, (err) => {
+    //     if (err) {
+    //       console.error(err);
+    //     } else {
+    //       console.log("File is deleted.");
+    //     }
+    //   });
+    // }
+
+    res.status(200).json(wood);
+  } catch (err) {
+    res.status(500).json({
+      message:
+        err.message ||
+        "Something wrong happened with your request to update a wood.",
     });
   }
 };
