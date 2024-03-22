@@ -159,59 +159,68 @@ paths:
     post:
       tags:
         - Woods
-      summary: Create
-      description: Create a new essence of wood with the API
+      summary: Create Wood
+      description: Create a new wood entry.
+      consumes:
+        - multipart/form-data
       requestBody:
+        required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               type: object
               properties:
-                name:
-                  type: string
-                  example: "MyNewWood"
-                type:
-                  type: string
-                  example: "exotic wood"
-                hardness:
-                  type: string
-                  example: "medium-hard"
+                datas:
+                  properties:
+                    name:
+                      type: string
+                      example: "Épicéa"
+                    type:
+                      type: string
+                      example: "softwood"
+                    hardness:
+                      type: string
+                      example: "tender"
                 image:
-                  type: file
-                  example: myAwesomeImage.jpg
+                  type: string
+                  format: binary
+                  description: Image of the wood
       responses:
         "201":
-          description: Creation successful
+          description: Wood created successfully.
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  id:
-                    type: integer
-                    example: 22
-                  name:
-                    type: string
-                    example: MyNewWood
-                  type:
-                    type: string
-                    example: exotic wood
-                  hardness:
-                    type: string
-                    example: medium-hard
-                  image:
-                    type: string
-                    example: "http://127.0.0.1:5000/uploads/analyse_FFOM_Agriconomie_08_2023_(2)_1711102738116.png"
-                  updatedAt:
-                    type: string
-                    format: date-time
-                    example: "2023-04-25T13:35:14.519Z"
-                  createdAt:
-                    type: string
-                    format: date-time
-                    example: "2023-04-25T"
+                  wood:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 15
+                      name:
+                        type: string
+                        example: "Chêne"
+                      type:
+                        type: string
+                        example: "noble and hardwoods"
+                      hardness:
+                        type: string
+                        example: "hard"
+                      image:
+                        type: string
+                        example: "http://localhost:5000/uploads/What-is-Jamstack_1711104145089.jpg"
+                      updatedAt:
+                        type: string
+                        format: date-time
+                        example: "2024-03-22T10:42:25.094Z"
+                      createdAt:
+                        type: string
+                        format: date-time
+                        example: "2024-03-22T10:42:25.094Z"
         "500":
-          description: Missing some field
+          description: An error occurred while creating a wood entry.
           content:
             application/json:
               schema:
@@ -219,46 +228,58 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: "notNull Violation: name is required"
-  /woods/:hardness:
+                    example: "notNull Violation: Name is required"
+  /wood/{hardness}:
     get:
       tags:
         - Woods
-      summary: Filter
-      description: Filter essences of wood based on an hardness parameter with the API
+      summary: Read Woods by Hardness
+      description: Retrieve woods with a specific hardness.
+      parameters:
+        - in: path
+          name: hardness
+          description: Hardness of the wood to retrieve
+          required: true
+          type: string
       responses:
         "200":
-          description: Filtered successfully
+          description: List of woods with the specified hardness.
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  id:
-                    type: integer
-                    example: 22
-                  name:
-                    type: string
-                    example: MyNewWood
-                  type:
-                    type: string
-                    example: exotic wood
-                  hardness:
-                    type: string
-                    example: medium-hard
-                  image:
-                    type: string
-                    example: "http://127.0.0.1:5000/uploads/analyse_FFOM_Agriconomie_08_2023_(2)_1711102738116.png"
-                  updatedAt:
-                    type: string
-                    format: date-time
-                    example: "2023-04-25T13:35:14.519Z"
-                  createdAt:
-                    type: string
-                    format: date-time
-                    example: "2023-04-25T"
+                  woods:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: "Épicéa"
+                        type:
+                          type: string
+                          example: "softwood"
+                        hardness:
+                          type: string
+                          example: "tender"
+                        image:
+                          type: string
+                          nullable: true
+                          example: null
+                        createdAt:
+                          type: string
+                          format: date-time
+                          example: "2024-03-21T09:22:46.000Z"
+                        updatedAt:
+                          type: string
+                          format: date-time
+                          example: "2024-03-21T09:22:46.000Z"
         "500":
-          description: Missing some field
+          description: An error occurred while retrieving woods by hardness.
           content:
             application/json:
               schema:
@@ -266,4 +287,4 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: "Couldn't find woods with the specified hardness"
+                    example: "An error occurred while retrieving woods by hardness."
