@@ -1,0 +1,269 @@
+openapi: 3.1.0
+info:
+  title: Api des essences de bois
+  description: Une API pour gérer les données relatives aux essences de bois.
+  version: 1.0.0
+servers:
+  - url: http://127.0.0.1:5000/api
+paths:
+  /auth/signup:
+    post:
+      tags:
+        - Auth
+      summary: Registration
+      description: Create an account on API
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                  example: "Jane"
+                lastName:
+                  type: string
+                  example: "Doe"
+                email:
+                  type: string
+                  example: "jane@doe.com"
+                password:
+                  type: string
+                  example: "azerty"
+      responses:
+        "201":
+          description: Register successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 5
+                  email:
+                    type: string
+                    format: email
+                    example: jane@doe.com
+                  password:
+                    type: string
+                    example: "$2b$10$0W2.Zf4w6q3CVeptjetyr.BMAcUONS3cV0sc2uVG0r616fG/XZG7K"
+                  firstName:
+                    type: string
+                    example: Jane
+                  lastName:
+                    type: string
+                    example: Doe
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    example: "2023-04-25T13:35:14.519Z"
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: "2023-04-25T"
+        "500":
+          description: Missing some field
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "notNull Violation: firstName is required"
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Log in
+      description: Log into an account on API
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: "jane@doe.com"
+                password:
+                  type: string
+                  example: "azerty"
+      responses:
+        "200":
+          description: Register successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzExMTAxMzEwLCJleHAiOjE3MTExMDQ5MTB9.dojdunpzzhtuw00k7YdWlJDThO4Vf2gmGs8Z81OhwDA"
+                  id:
+                    type: integer
+                    example: 5
+                  firstName:
+                    type: string
+                    example: "Jane"
+                  lastName:
+                    type: string
+                    example: "Doe"
+                  email:
+                    type: string
+                    format: email
+                    example: "jane@doe.com"
+                  password:
+                    type: string
+                    example: "$2b$10$0W2.Zf4w6q3CVeptjetyr.BMAcUONS3cV0sc2uVG0r616fG/XZG7K"
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    example: "2023-04-25T13:35:14.519Z"
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: "2023-04-25T"
+        "500":
+          description: Missing some field
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "notNull Violation: firstName is required"
+        "401":
+          description: Invalid password
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Invalid password"
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User not found"
+  /woods/:
+    post:
+      tags:
+        - Woods
+      summary: Create
+      description: Create a new essence of wood with the API
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "MyNewWood"
+                type:
+                  type: string
+                  example: "exotic wood"
+                hardness:
+                  type: string
+                  example: "medium-hard"
+                image:
+                  type: file
+                  example: myAwesomeImage.jpg
+      responses:
+        "201":
+          description: Creation successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 22
+                  name:
+                    type: string
+                    example: MyNewWood
+                  type:
+                    type: string
+                    example: exotic wood
+                  hardness:
+                    type: string
+                    example: medium-hard
+                  image:
+                    type: string
+                    example: "http://127.0.0.1:5000/uploads/analyse_FFOM_Agriconomie_08_2023_(2)_1711102738116.png"
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    example: "2023-04-25T13:35:14.519Z"
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: "2023-04-25T"
+        "500":
+          description: Missing some field
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "notNull Violation: name is required"
+  /woods/:hardness:
+    get:
+      tags:
+        - Woods
+      summary: Filter
+      description: Filter essences of wood based on an hardness parameter with the API
+      responses:
+        "200":
+          description: Filtered successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 22
+                  name:
+                    type: string
+                    example: MyNewWood
+                  type:
+                    type: string
+                    example: exotic wood
+                  hardness:
+                    type: string
+                    example: medium-hard
+                  image:
+                    type: string
+                    example: "http://127.0.0.1:5000/uploads/analyse_FFOM_Agriconomie_08_2023_(2)_1711102738116.png"
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    example: "2023-04-25T13:35:14.519Z"
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: "2023-04-25T"
+        "500":
+          description: Missing some field
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Couldn't find woods with the specified hardness"
